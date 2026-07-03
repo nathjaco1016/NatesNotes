@@ -1,0 +1,57 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Fired by the vault repo's trigger-site-build workflow when notes change.
+  repository_dispatch:
+    types: [notes-updated]
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The notes vault is checked out where local dev symlinks it.
+      # VAULT_TOKEN: a fine-grained PAT with read access to NatesNotesVault
+      # (required while the vault repo is private).
+      - uses: actions/checkout@v4
+        with:
+          repository: nathjaco1016/NatesNotesVault
+          token: ${{ secrets.VAULT_TOKEN }}
+          path: content
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          SITE_URL: https://nathjaco1016.github.io
+          BASE_PATH: /NatesNotes
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

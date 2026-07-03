@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.astro/
+.DS_Store
+
+# Local dev symlink to the notes vault; CI checks the vault repo out here instead.
+content

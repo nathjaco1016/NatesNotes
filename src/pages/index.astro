@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+import { publishedNotes, noteTitle, formatDate, url } from '../lib/content';
+
+const notes = await publishedNotes();
+---
+
+<Base title="NatesNotes" description="Notes by Nathan Jacobs">
+  <ul class="entry-list">
+    {
+      notes.map((note) => (
+        <li>
+          <a class="entry-title" href={url(`/notes/${note.id}/`)}>
+            {noteTitle(note)}
+          </a>
+          {note.data.date && <span class="entry-meta">{formatDate(note.data.date)}</span>}
+          {note.data.description && <span class="entry-desc">{note.data.description}</span>}
+        </li>
+      ))
+    }
+  </ul>
+  {notes.length === 0 && <p>No notes yet.</p>}
+</Base>

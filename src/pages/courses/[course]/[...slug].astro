@@ -1,0 +1,71 @@
+---
+import { getCollection } from 'astro:content';
+import { render } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import {
+  courseNotes,
+  noteTitle,
+  formatDate,
+  url,
+  type Course,
+  type Note,
+} from '../../../lib/content';
+
+export async function getStaticPaths() {
+  const courses = await getCollection('courses');
+  const paths = [];
+  for (const course of courses) {
+    const notes = await courseNotes(course);
+    notes.forEach((note, index) => {
+      paths.push({
+        params: { course: course.id, slug: note.id },
+        props: { course, note, index, total: notes.length, notes },
+      });
+    });
+  }
+  return paths;
+}
+
+const { course, note, index, total, notes } = Astro.props as {
+  course: Course;
+  note: Note;
+  index: number;
+  total: number;
+  notes: Note[];
+};
+
+const { Content } = await render(note);
+const prev = index > 0 ? notes[index - 1] : undefined;
+const next = index < total - 1 ? notes[index + 1] : undefined;
+---
+
+<Base
+  title={noteTitle(note)}
+  description={note.data.description}
+  canonical={url(`/notes/${note.id}/`)}
+>
+  <p class="course-context">
+    <a href={url(`/courses/${course.id}/`)}>{course.data.title}</a> · {index + 1} of {total}
+  </p>
+  <article>
+    <h1>{noteTitle(note)}</h1>
+    {note.data.date && <p class="note-meta">{formatDate(note.data.date)}</p>}
+    <Content />
+  </article>
+  {
+    (prev || next) && (
+      <nav class="course-nav">
+        {prev && (
+          <a class="prev" href={url(`/courses/${course.id}/${prev.id}/`)}>
+            ← {noteTitle(prev)}
+          </a>
+        )}
+        {next && (
+          <a class="next" href={url(`/courses/${course.id}/${next.id}/`)}>
+            {noteTitle(next)} →
+          </a>
+        )}
+      </nav>
+    )
+  }
+</Base>

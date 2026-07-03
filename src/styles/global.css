@@ -1,0 +1,232 @@
+:root {
+  --text: #1a1a1a;
+  --muted: #6b6b6b;
+  --rule: #e2e2e2;
+  --bg: #ffffff;
+  --link: #1a4fc4;
+  --code-bg: #f4f4f4;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #d9d9d9;
+    --muted: #8f8f8f;
+    --rule: #333333;
+    --bg: #121212;
+    --link: #7aa2f7;
+    --code-bg: #1e1e1e;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: ui-serif, Georgia, 'Times New Roman', serif;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+.container {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* Header */
+.site-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 2.5rem 0 1.5rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 2.5rem;
+}
+
+.site-header .site-name {
+  font-weight: 700;
+  font-size: 1.125rem;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.site-header nav {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.site-header nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9375rem;
+}
+
+.site-header nav a:hover {
+  color: var(--text);
+}
+
+main {
+  padding-bottom: 4rem;
+}
+
+/* Prose */
+h1, h2, h3, h4 {
+  line-height: 1.25;
+  margin: 2rem 0 0.75rem;
+}
+
+h1 {
+  font-size: 1.75rem;
+  margin-top: 0;
+}
+
+a {
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+code {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.875em;
+  background: var(--code-bg);
+  padding: 0.125em 0.3em;
+  border-radius: 3px;
+}
+
+pre {
+  padding: 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.8125rem;
+}
+
+blockquote {
+  margin: 1.5rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--rule);
+  color: var(--muted);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 2.5rem 0;
+}
+
+/* Lists of notes / courses */
+.entry-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.entry-list li {
+  margin-bottom: 1.5rem;
+}
+
+.entry-list .entry-title {
+  font-weight: 600;
+}
+
+.entry-list .entry-meta {
+  display: block;
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.8125rem;
+  margin-top: 0.125rem;
+}
+
+.entry-list .entry-desc {
+  display: block;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  margin-top: 0.125rem;
+}
+
+/* Ordered course outline */
+ol.entry-list {
+  counter-reset: outline;
+}
+
+ol.entry-list li {
+  counter-increment: outline;
+  display: grid;
+  grid-template-columns: 2rem 1fr;
+  margin-bottom: 1rem;
+}
+
+ol.entry-list li::before {
+  content: counter(outline);
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  padding-top: 0.15rem;
+}
+
+/* Note page */
+.note-meta {
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  margin: -0.25rem 0 2rem;
+}
+
+.note-footer {
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.note-footer p {
+  margin: 0.375rem 0;
+}
+
+/* Course context banner + prev/next */
+.course-context {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin-bottom: 1.5rem;
+}
+
+.course-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--rule);
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9375rem;
+}
+
+.course-nav .next {
+  margin-left: auto;
+  text-align: right;
+}
+
+.page-desc {
+  color: var(--muted);
+  margin: -0.5rem 0 2rem;
+}

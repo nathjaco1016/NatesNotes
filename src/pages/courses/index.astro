@@ -1,0 +1,29 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { url } from '../../lib/content';
+
+const courses = (await getCollection('courses')).sort((a, b) =>
+  a.data.title.localeCompare(b.data.title),
+);
+---
+
+<Base title="Courses" description="Curated sequences of notes">
+  <h1>Courses</h1>
+  <ul class="entry-list">
+    {
+      courses.map((course) => (
+        <li>
+          <a class="entry-title" href={url(`/courses/${course.id}/`)}>
+            {course.data.title}
+          </a>
+          <span class="entry-meta">
+            {course.data.notes.length} {course.data.notes.length === 1 ? 'note' : 'notes'}
+          </span>
+          {course.data.description && <span class="entry-desc">{course.data.description}</span>}
+        </li>
+      ))
+    }
+  </ul>
+  {courses.length === 0 && <p>No courses yet.</p>}
+</Base>
