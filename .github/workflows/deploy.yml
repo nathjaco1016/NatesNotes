@@ -16,20 +16,20 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # The notes vault is checked out where local dev symlinks it.
       # VAULT_TOKEN: a fine-grained PAT with read access to NatesNotesVault
       # (required while the vault repo is private).
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           repository: nathjaco1016/NatesNotesVault
           token: ${{ secrets.VAULT_TOKEN }}
           path: content
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - run: npm ci
@@ -39,7 +39,7 @@ jobs:
           SITE_URL: https://nathjaco1016.github.io
           BASE_PATH: /NatesNotes
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
@@ -54,4 +54,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
